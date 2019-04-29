@@ -1,0 +1,7 @@
+{
+  "env": {
+    "PORT": 3000,
+    "admin_user": "admin",
+    "admin_pwd": "NguyenDung@26"
+  }
+}
