@@ -3,18 +3,22 @@ const app = express();
 const port = process.env.PORT || 3000;
 const path = require("path");
 
-const configs = require('./configs');
-const mongoURI = configs.mongoURL;
+const user = require("./routes/apis/user");
+const prolife = require("./routes/apis/prolife");
+const posts = require("./routes/apis/posts");
 
-const mongoose = require('mongoose');
-mongoose.connect(mongoURI,{ useNewUrlParser: true }, () => console.log('connected !')).then(() => console.log(`connect thanh cong`)).catch(err => console.log(err))
+//connect mlab database
+const connect = require("./database/index.mongoose");
+connect();
 //using json for body
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 //config router
-const router = require("./routes");
-app.use("/", router);
+app.use("/api/user", user);
+app.use("/api/prolife", prolife);
+app.use("/api/posts", posts);
+
 // setup public folder
 app.use(express.static(path.join(__dirname, "/public")));
 
