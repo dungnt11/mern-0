@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 3000;
 const path = require("path");
+const passport = require("passport");
 
 const user = require("./routes/apis/user");
 const prolife = require("./routes/apis/prolife");
@@ -13,6 +14,16 @@ connect();
 //using json for body
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+//passport midderware
+app.use(passport.initialize());
+app.use(function(req, res, next) {
+  console.log(req.cookies);
+  next();
+});
+
+//config passport
+require("./configs/passport")(passport);
 
 //config router
 app.use("/api/user", user);

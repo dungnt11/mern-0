@@ -1,11 +1,16 @@
-/**
- * @api/user
- */
 const express = require("express");
 const routerUser = express.Router();
 const user = require("../../models/user");
 const gravatar = require("gravatar");
 const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const passport = require("passport");
+
+/**
+ * @route GET api/user/register
+ * @dect Register username and pwd
+ * @access Public
+ */
 routerUser.post("/register", (req, res) => {
   user.findOne({ email: req.body.name }).then(us => {
     if (us) {
@@ -27,7 +32,6 @@ routerUser.post("/register", (req, res) => {
         pwd: req.body.pwd,
         avatar
       });
-      console.log(newUser);
       //hash pwd
       bcrypt.genSalt(10, function(err, salt) {
         bcrypt.hash(newUser.pwd, salt, function(err, hash) {
@@ -43,4 +47,57 @@ routerUser.post("/register", (req, res) => {
   });
 });
 
+/**
+ * @route GET api/user/login
+ * @dect Login and return JWT - token
+ * @access Public
+ */
+routerUser.post("/login", (req, res) => {
+  const email = req.body.email;
+  const pwd = req.body.pwd;
+
+  //find user by email
+  user.findOne({ email }).then(us => {
+    // check user
+    if (!us) {
+      return res.status(404).json({ msg: "user email not found !" });
+    }
+    //check password
+    bcrypt.compare(pwd, us.pwd).then(result => {
+      if (result) {
+        const payload = { id: us.id, name: us.name, avatar: us.avatar };
+        jwt.sign(
+          payload,
+          process.env.secretJWT,
+          { expiresIn: 3600 },
+          (err, token) => {
+            if (err) res.status(500).json({ msg: "error create token" });
+            else {
+              res.status(200).json({
+                success: true,
+                token
+              });
+            }
+          }
+        ); // expires : 1 hour
+      } else {
+        res.status(400).json({ msg: "password incorrect" });
+      }
+    });
+  });
+});
+
+/**
+ * @route GET api/user/current
+ * @dect Return current user
+ * @access Private
+ */
+
+routerUser.get(
+  "/current",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    res.json({ msg: "success" });
+  }
+);
 module.exports = routerUser;
