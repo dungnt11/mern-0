@@ -5,6 +5,7 @@ const gravatar = require("gravatar");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
+const validatorRegister = require("../../validators/register");
 
 /**
  * @route GET api/user/register
@@ -12,6 +13,14 @@ const passport = require("passport");
  * @access Public
  */
 routerUser.post("/register", (req, res) => {
+  const { err, isValid } = validatorRegister(req.body);
+  //validator request
+
+  if (!isValid) {
+    // khong loi
+    return res.status(400).json(err);
+  }
+  
   user.findOne({ email: req.body.name }).then(us => {
     if (us) {
       res.status(400).json({
@@ -55,7 +64,6 @@ routerUser.post("/register", (req, res) => {
 routerUser.post("/login", (req, res) => {
   const email = req.body.email;
   const pwd = req.body.pwd;
-
   //find user by email
   user.findOne({ email }).then(us => {
     // check user
@@ -97,7 +105,9 @@ routerUser.get(
   "/current",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
+    console.log(req.user);
     res.json({ msg: "success" });
   }
 );
+
 module.exports = routerUser;

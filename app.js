@@ -17,10 +17,6 @@ app.use(express.urlencoded({ extended: false }));
 
 //passport midderware
 app.use(passport.initialize());
-app.use(function(req, res, next) {
-  console.log(req.cookies);
-  next();
-});
 
 //config passport
 require("./configs/passport")(passport);
