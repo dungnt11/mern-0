@@ -5,7 +5,6 @@ const gravatar = require("gravatar");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
-const validatorRegister = require("../../validators/register");
 
 /**
  * @route GET api/user/register
@@ -13,15 +12,7 @@ const validatorRegister = require("../../validators/register");
  * @access Public
  */
 routerUser.post("/register", (req, res) => {
-  const { err, isValid } = validatorRegister(req.body);
-  //validator request
-
-  if (!isValid) {
-    // khong loi
-    return res.status(400).json(err);
-  }
-  
-  user.findOne({ email: req.body.name }).then(us => {
+  user.findOne({ email: req.body.email }).then(us => {
     if (us) {
       res.status(400).json({
         msg: "Email already exists"
