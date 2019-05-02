@@ -5,13 +5,37 @@ const gravatar = require("gravatar");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
+const validatorRegister = require("../../validators/register");
+const validatorLogin = require("../../validators/login");
+
+// check validator api/user/register
+let checkValidatorMd = (req, res, next) => {
+  const { err, isValid } = validatorRegister(req.body);
+  //validator request
+  if (!isValid) {
+    // khong loi
+    return res.status(400).json(err);
+  }
+  next();
+};
+
+// check login api/user/login
+let checkValidatorLogin = (req, res, next) => {
+  const { err, isValid } = validatorLogin(req.body);
+  //validator request
+  if (!isValid) {
+    // khong loi
+    return res.status(400).json(err);
+  }
+  next();
+};
 
 /**
  * @route GET api/user/register
  * @dect Register username and pwd
  * @access Public
  */
-routerUser.post("/register", (req, res) => {
+routerUser.post("/register", checkValidatorMd, (req, res) => {
   user.findOne({ email: req.body.email }).then(us => {
     if (us) {
       res.status(400).json({
@@ -52,7 +76,7 @@ routerUser.post("/register", (req, res) => {
  * @dect Login and return JWT - token
  * @access Public
  */
-routerUser.post("/login", (req, res) => {
+routerUser.post("/login", checkValidatorLogin, (req, res) => {
   const email = req.body.email;
   const pwd = req.body.pwd;
   //find user by email
