@@ -120,8 +120,7 @@ routerUser.get(
   "/current",
   passport.authenticate("jwt", { session: false }),
   (req, res) => {
-    console.log(req.user);
-    res.json({ msg: "success" });
+    res.json({ msg: req.user });
   }
 );
 

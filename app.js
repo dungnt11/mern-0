@@ -5,7 +5,7 @@ const path = require("path");
 const passport = require("passport");
 
 const user = require("./routes/apis/user");
-const prolife = require("./routes/apis/prolife");
+const profile = require("./routes/apis/profile");
 const posts = require("./routes/apis/posts");
 
 //connect mlab database
@@ -24,7 +24,7 @@ require("./configs/passport")(passport);
 
 //config router
 app.use("/api/user", user);
-app.use("/api/prolife", prolife);
+app.use("/api/profile", profile);
 app.use("/api/posts", posts);
 
 // setup public folder

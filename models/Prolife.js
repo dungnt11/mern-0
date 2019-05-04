@@ -4,8 +4,10 @@ const Schema = mongoose.Schema;
 
 const ProlifeSchema = new Schema({
   user: {
+    // lay id tu bang user
     type: Schema.Types.ObjectId,
-    ref: "users"
+    // quan he voi bang du lieu users
+    ref: "user"
   },
   handle: {
     type: String,
@@ -25,7 +27,7 @@ const ProlifeSchema = new Schema({
     type: String,
     required: true
   },
-  skill: {
+  skills: {
     type: [String],
     required: true
   },
@@ -110,7 +112,7 @@ const ProlifeSchema = new Schema({
   },
   date: {
     type: Date,
-    default: Date.now()
+    default: Date.now
   }
 });
 
