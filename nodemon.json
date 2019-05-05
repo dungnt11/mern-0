@@ -1,6 +1,6 @@
 {
   "env": {
-    "PORT": 3000,
+    "PORT": 9999,
     "admin_user": "admin",
     "admin_pwd": "01652080426Abc",
     "secretJWT": "64756E67206465702074726169"
