@@ -72,7 +72,7 @@ routerUser.post("/register", checkValidatorMd, (req, res) => {
 });
 
 /**
- * @route GET api/user/login
+ * @route POST api/user/login
  * @dect Login and return JWT - token
  * @access Public
  */
