@@ -11,6 +11,7 @@ const validatorLogin = require("../../validators/login");
 // check validator api/user/register
 let checkValidatorMd = (req, res, next) => {
   const { err, isValid } = validatorRegister(req.body);
+  console.log(isValid);
   //validator request
   if (!isValid) {
     // khong loi
@@ -31,7 +32,7 @@ let checkValidatorLogin = (req, res, next) => {
 };
 
 /**
- * @route GET api/user/register
+ * @route POST api/user/register
  * @dect Register username and pwd
  * @access Public
  */

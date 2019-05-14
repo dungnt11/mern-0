@@ -4,21 +4,26 @@ import { BrowserRouter as Router } from "react-router-dom";
 import "./App.css";
 
 import Navbar from "./components/Layouts/Navbar";
+import { Provider } from "react-redux";
+
 import Footer from "./components/Layouts/Footer";
 import RouNavbar from "./Routes/RouNavbar";
+import configStore from "./store/index";
+
+const store = configStore();
 
 export default class App extends Component {
   render() {
     return (
-      <Fragment>
+      <Provider store={store}>
         <Router>
-          <div className="App">
+          <Fragment>
             <Navbar />
             <RouNavbar />
             <Footer />
-          </div>
+          </Fragment>
         </Router>
-      </Fragment>
+      </Provider>
     );
   }
 }

@@ -1,8 +1,10 @@
 import React, { Component, Fragment } from "react";
-import axios from "axios";
 import classNames from "classnames";
+import { connect } from "react-redux";
+import PropTypes from "prop-types";
+import { registerStart } from "../../actions";
 
-export default class Register extends Component {
+class Register extends Component {
   constructor(props) {
     super(props);
 
@@ -29,15 +31,15 @@ export default class Register extends Component {
       pwd: this.state.pwd,
       pwd1: this.state.pwd1
     };
-    axios
-      .post("/api/user/register", newUser)
-      .then(res => console.log(res.data))
-      .catch(err => {
-        this.setState({ err: err.response.data });
-      });
+
+    this.props.register(newUser);
   };
+
   render() {
     let { err } = this.state;
+    let { auth, loadingRegister } = this.props;
+    console.log(auth);
+    console.log(loadingRegister);
     return (
       <Fragment>
         <div className="register">
@@ -45,6 +47,7 @@ export default class Register extends Component {
             <div className="row">
               <div className="col-md-8 m-auto">
                 <h1 className="display-4 text-center">Sign Up</h1>
+                {auth.user ? auth.user.name : "null"}
                 <p className="lead text-center">
                   Create your DevConnector account
                 </p>
@@ -127,3 +130,24 @@ export default class Register extends Component {
     );
   }
 }
+
+Register.propTypes = {
+  user: PropTypes.object,
+  register: PropTypes.func
+};
+
+const mapStateToProps = ({ auth, loadingRegister }) => ({
+  auth,
+  loadingRegister
+});
+
+const mapDispatchToProps = dispatch => {
+  return {
+    register: newUser => dispatch(registerStart(newUser))
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Register);
