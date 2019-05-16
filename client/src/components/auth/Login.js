@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
 import classnames from "classnames";
-import { startLogin } from "../../actions";
+import { startAuth } from "../../actions";
 
 class Login extends Component {
   constructor(props) {
@@ -102,7 +102,7 @@ Login.propTypes = {
 };
 
 const mapDispatchToProps = dispatch => ({
-  loginStart: user => dispatch(startLogin(user))
+  loginStart: user => dispatch(startAuth(user))
 });
 
 const mapStateToProps = ({ loginReducer, errAuth }) => ({

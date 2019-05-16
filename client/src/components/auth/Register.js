@@ -1,8 +1,8 @@
 import React, { Component, Fragment } from "react";
 import classNames from "classnames";
 import { connect } from "react-redux";
-import PropTypes from "prop-types";
-import { registerStart } from "../../actions";
+import { startRegister } from "../../actions";
+import propTypes from 'prop-types'
 
 class Register extends Component {
   constructor(props) {
@@ -31,7 +31,7 @@ class Register extends Component {
       pwd: this.state.pwd,
       pwd1: this.state.pwd1
     };
-    console.log(newUser);
+    this.props.register(newUser)
   };
 
   render() {
@@ -105,7 +105,15 @@ class Register extends Component {
   }
 }
 
+Register.propTypes = {
+  register: propTypes.func.isRequired
+}
+
+const mapDispatchToProps = dispatch => ({
+  register: newUser => dispatch(startRegister(newUser))
+});
+
 export default connect(
   null,
-  null
+  mapDispatchToProps
 )(Register);

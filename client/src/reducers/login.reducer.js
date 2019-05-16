@@ -1,4 +1,4 @@
-import { LOGIN } from "../constants";
+import { AUTH } from "../constants";
 
 const userState = {
   isAuth: false,
@@ -7,7 +7,7 @@ const userState = {
 
 let loginReducer = (state = userState, action) => {
   switch (action.type) {
-    case LOGIN.SUCCESS:
+    case AUTH.SUCCESS:
       return {
         isAuth: true,
         user: action.user

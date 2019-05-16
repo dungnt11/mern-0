@@ -1,3 +1,11 @@
-import { startLogin, errLogin, successLogin } from "./login.action";
+import { startAuth, errAuth, successAuth } from "./auth.action";
+import { startRegister, errRegister, successRegister } from "./register.action";
 
-export { startLogin, errLogin, successLogin };
+export {
+  startAuth, // login
+  errAuth,
+  successAuth,
+  startRegister, // register
+  errRegister,
+  successRegister
+};

@@ -11,7 +11,6 @@ const validatorLogin = require("../../validators/login");
 // check validator api/user/register
 let checkValidatorMd = (req, res, next) => {
   const { err, isValid } = validatorRegister(req.body);
-  console.log(isValid);
   //validator request
   if (!isValid) {
     // khong loi
@@ -26,6 +25,7 @@ let checkValidatorLogin = (req, res, next) => {
   //validator request
   if (!isValid) {
     // khong loi
+    console.log("co loi");
     return res.status(400).json(err);
   }
   next();
@@ -64,8 +64,8 @@ routerUser.post("/register", checkValidatorMd, (req, res) => {
           newUser.pwd = hash;
           newUser
             .save()
-            .then(user => res.status(200).json(user))
-            .catch(err => console.log(err));
+            .then(user => res.status(200).json({ msg: "success" }))
+            .catch(err => res.status(500).json({ err: "err in server" }));
         });
       });
     }
@@ -84,7 +84,7 @@ routerUser.post("/login", checkValidatorLogin, (req, res) => {
   user.findOne({ email }).then(us => {
     // check user
     if (!us) {
-      return res.status(404).json({ msg: "user email not found !" });
+      return res.status(404).json({ email: "user email not found !" });
     }
     //check password
     bcrypt.compare(pwd, us.pwd).then(result => {
@@ -95,7 +95,7 @@ routerUser.post("/login", checkValidatorLogin, (req, res) => {
           process.env.secretJWT,
           { expiresIn: 3600 },
           (err, token) => {
-            if (err) res.status(500).json({ msg: "error create token" });
+            if (err) res.status(500).json({ token: "error create token" });
             else {
               res.status(200).json({
                 success: true,
@@ -105,7 +105,7 @@ routerUser.post("/login", checkValidatorLogin, (req, res) => {
           }
         ); // expires : 1 hour
       } else {
-        res.status(400).json({ msg: "password incorrect" });
+        res.status(400).json({ pwd: "password incorrect" });
       }
     });
   });

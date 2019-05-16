@@ -1,7 +1,7 @@
 import { call, takeLatest, put } from "redux-saga/effects";
-import { LOGIN } from "../constants";
+import { AUTH } from "../constants";
 import { loginApi } from "../apis/authorization.api";
-import { errLogin, successLogin } from "../actions";
+import { errAuth, successAuth } from "../actions";
 import setAutherToken from "../apis/setHeader.api";
 import jwtDecode from "jwt-decode";
 
@@ -14,14 +14,14 @@ export function* handleLogin({ newUser }) {
     localStorage.setItem("jwtToken", token);
     setAutherToken(token);
     // dispatch response data and decode after this
-    yield put(successLogin(jwtDecode(token)));
+    yield put(successAuth(jwtDecode(token)));
   } catch (err) {
     // get err
     let resErr = err.response.data;
-    yield put(errLogin(resErr));
+    yield put(errAuth(resErr));
   }
 }
 
 export function* login() {
-  yield takeLatest(LOGIN.START, handleLogin);
+  yield takeLatest(AUTH.START, handleLogin);
 }
