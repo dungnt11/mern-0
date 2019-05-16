@@ -31,15 +31,10 @@ class Register extends Component {
       pwd: this.state.pwd,
       pwd1: this.state.pwd1
     };
-
-    this.props.register(newUser);
+    console.log(newUser);
   };
 
   render() {
-    let { err } = this.state;
-    let { auth, loadingRegister } = this.props;
-    console.log(auth);
-    console.log(loadingRegister);
     return (
       <Fragment>
         <div className="register">
@@ -47,7 +42,6 @@ class Register extends Component {
             <div className="row">
               <div className="col-md-8 m-auto">
                 <h1 className="display-4 text-center">Sign Up</h1>
-                {auth.user ? auth.user.name : "null"}
                 <p className="lead text-center">
                   Create your DevConnector account
                 </p>
@@ -55,33 +49,23 @@ class Register extends Component {
                   <div className="form-group">
                     <input
                       type="text"
-                      className={classNames("form-control form-control-lg", {
-                        "is-invalid": err.name
-                      })}
+                      className="form-control form-control-lg"
                       placeholder="Name"
                       name="name"
                       required
                       value={this.state.name}
                       onChange={this.watchChange}
                     />
-                    {err.name && (
-                      <div className="invalid-feedback">{err.name}</div>
-                    )}
                   </div>
                   <div className="form-group">
                     <input
                       type="email"
-                      className={classNames("form-control form-control-lg", {
-                        "is-invalid": err.email
-                      })}
+                      className="form-control form-control-lg"
                       placeholder="Email Address"
                       name="email"
                       value={this.state.email}
                       onChange={this.watchChange}
                     />
-                    {err.email && (
-                      <div className="invalid-feedback">{err.email}</div>
-                    )}
                     <small className="form-text text-muted">
                       This site uses Gravatar so if you want a profile image,
                       use a Gravatar email
@@ -94,28 +78,18 @@ class Register extends Component {
                       name="pwd"
                       value={this.state.pwd}
                       onChange={this.watchChange}
-                      className={classNames("form-control form-control-lg", {
-                        "is-invalid": err.pwd
-                      })}
+                      className="form-control form-control-lg"
                     />
-                    {err.pwd && (
-                      <div className="invalid-feedback">{err.pwd}</div>
-                    )}
                   </div>
                   <div className="form-group">
                     <input
                       type="password"
-                      className={classNames("form-control form-control-lg", {
-                        "is-invalid": err.pwd1
-                      })}
+                      className="form-control form-control-lg"
                       placeholder="Confirm Password"
                       name="pwd1"
                       value={this.state.pwd1}
                       onChange={this.watchChange}
                     />
-                    {err.pwd1 && (
-                      <div className="invalid-feedback">{err.pwd1}</div>
-                    )}
                   </div>
                   <input
                     type="submit"
@@ -131,23 +105,7 @@ class Register extends Component {
   }
 }
 
-Register.propTypes = {
-  user: PropTypes.object,
-  register: PropTypes.func
-};
-
-const mapStateToProps = ({ auth, loadingRegister }) => ({
-  auth,
-  loadingRegister
-});
-
-const mapDispatchToProps = dispatch => {
-  return {
-    register: newUser => dispatch(registerStart(newUser))
-  };
-};
-
 export default connect(
-  mapStateToProps,
-  mapDispatchToProps
+  null,
+  null
 )(Register);

@@ -1,9 +1,9 @@
 import { combineReducers } from "redux";
 
-import auth from "./auth.reducer.js";
-import loadingRegister from './loading'
+import { loginReducer } from "./login.reducer";
 
-export default combineReducers({
-  auth,
-  loadingRegister
+let rootReducer = combineReducers({
+  loginReducer
 });
+
+export default rootReducer;
