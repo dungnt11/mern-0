@@ -2,7 +2,8 @@ import React, { Component, Fragment } from "react";
 import classNames from "classnames";
 import { connect } from "react-redux";
 import { startRegister } from "../../actions";
-import propTypes from 'prop-types'
+import propTypes from "prop-types";
+import { withRouter } from "react-router-dom";
 
 class Register extends Component {
   constructor(props) {
@@ -31,10 +32,18 @@ class Register extends Component {
       pwd: this.state.pwd,
       pwd1: this.state.pwd1
     };
-    this.props.register(newUser)
+    this.props.register(newUser, this.props.history);
   };
 
+  componentWillReceiveProps(newProp) {
+    // set err in state when prop change
+    this.setState({
+      err: newProp.err
+    });
+  }
+
   render() {
+    let { err } = this.state;
     return (
       <Fragment>
         <div className="register">
@@ -49,23 +58,33 @@ class Register extends Component {
                   <div className="form-group">
                     <input
                       type="text"
-                      className="form-control form-control-lg"
+                      className={classNames("form-control form-control-lg", {
+                        "is-invalid": err.name
+                      })}
                       placeholder="Name"
                       name="name"
                       required
                       value={this.state.name}
                       onChange={this.watchChange}
                     />
+                    {err.name && (
+                      <div className="invalid-feedback">{err.name}</div>
+                    )}
                   </div>
                   <div className="form-group">
                     <input
                       type="email"
-                      className="form-control form-control-lg"
+                      className={classNames("form-control form-control-lg", {
+                        "is-invalid": err.email
+                      })}
                       placeholder="Email Address"
                       name="email"
                       value={this.state.email}
                       onChange={this.watchChange}
                     />
+                    {err.email && (
+                      <div className="invalid-feedback">{err.email}</div>
+                    )}
                     <small className="form-text text-muted">
                       This site uses Gravatar so if you want a profile image,
                       use a Gravatar email
@@ -78,18 +97,28 @@ class Register extends Component {
                       name="pwd"
                       value={this.state.pwd}
                       onChange={this.watchChange}
-                      className="form-control form-control-lg"
+                      className={classNames("form-control form-control-lg", {
+                        "is-invalid": err.pwd
+                      })}
                     />
+                    {err.pwd && (
+                      <div className="invalid-feedback">{err.pwd}</div>
+                    )}
                   </div>
                   <div className="form-group">
                     <input
                       type="password"
-                      className="form-control form-control-lg"
+                      className={classNames("form-control form-control-lg", {
+                        "is-invalid": err.pwd1
+                      })}
                       placeholder="Confirm Password"
                       name="pwd1"
                       value={this.state.pwd1}
                       onChange={this.watchChange}
                     />
+                    {err.pwd1 && (
+                      <div className="invalid-feedback">{err.pwd1}</div>
+                    )}
                   </div>
                   <input
                     type="submit"
@@ -106,14 +135,19 @@ class Register extends Component {
 }
 
 Register.propTypes = {
-  register: propTypes.func.isRequired
-}
+  register: propTypes.func.isRequired,
+  err: propTypes.object.isRequired
+};
 
 const mapDispatchToProps = dispatch => ({
-  register: newUser => dispatch(startRegister(newUser))
+  register: (newUser, history) => dispatch(startRegister(newUser, history))
+});
+
+const mapStateToProps = ({ errAuth }) => ({
+  err: errAuth
 });
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
-)(Register);
+)(withRouter(Register));

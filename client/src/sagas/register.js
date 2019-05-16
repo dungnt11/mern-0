@@ -1,18 +1,18 @@
-import { takeLatest, call } from "redux-saga/effects";
-
+import { takeLatest, call, put } from "redux-saga/effects";
 import { REGISTER } from "../constants";
 import { registerApi } from "../apis/authorization.api";
+import { errRegister } from "../actions";
 
-export function* handleRegister({ newUser }) {
+export function* handleRegister({ newUser, history }) {
   try {
     let info = yield call(registerApi, newUser);
     let dataUser = info.data;
     if (dataUser) {
-      console.log('thanh cong')
+      history.push("/login");
     }
   } catch (err) {
     let errRes = err.response.data;
-    console.log(errRes);
+    yield put(errRegister(errRes));
   }
 }
 

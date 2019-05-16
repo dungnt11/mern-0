@@ -1,8 +1,9 @@
 import { REGISTER } from "../constants";
 
-export const startRegister = user => ({
+export const startRegister = (user, history) => ({
   type: REGISTER.START,
-  newUser: user
+  newUser: user,
+  history
 });
 
 export const errRegister = err => ({

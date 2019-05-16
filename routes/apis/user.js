@@ -40,7 +40,7 @@ routerUser.post("/register", checkValidatorMd, (req, res) => {
   user.findOne({ email: req.body.email }).then(us => {
     if (us) {
       res.status(400).json({
-        msg: "Email already exists"
+        email: "Email already exists"
       });
     } else {
       // lay anh tu website bang email cho truoc
