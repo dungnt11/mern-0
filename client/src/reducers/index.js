@@ -1,9 +1,11 @@
 import { combineReducers } from "redux";
 
 import { loginReducer } from "./login.reducer";
+import { errAuth } from "./err.reducer";
 
 let rootReducer = combineReducers({
-  loginReducer
+  loginReducer,
+  errAuth
 });
 
 export default rootReducer;

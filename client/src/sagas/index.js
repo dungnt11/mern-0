@@ -1,3 +1,5 @@
+import { login } from "./login.saga";
+
 export default function* rootSaga() {
-  console.log("saga !");
+  yield login();
 }

@@ -1,12 +1,13 @@
 import axios from "axios";
 /**
- * route POST api/user/register
- * Private
+ * @route POST api/user/login
+ * @desc login api
+ * @Private
  */
-const postRegister = userRegister => {
+const loginApi = newUser => {
   return new Promise((resolve, reject) => {
     axios
-      .post("/api/user/register", JSON.parse(userRegister))
+      .post("/api/user/login", newUser)
       .then(res => {
         resolve(res);
       })
@@ -16,4 +17,4 @@ const postRegister = userRegister => {
   });
 };
 
-export { postRegister };
+export { loginApi };
