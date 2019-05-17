@@ -1,8 +1,66 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
+import { successAuth } from "../../actions";
+import { connect } from "react-redux";
+import propTypes from "prop-types";
 
-export default class Navbar extends Component {
+class Navbar extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      isAuth: false,
+      name: "",
+      avatar: ""
+    };
+  }
+
+  logout = event => {
+    event.preventDefault();
+    this.props.logout();
+  };
+
+  componentWillReceiveProps(newProp) {
+    if (newProp.user.isAuth) {
+      this.setState({
+        isAuth: newProp.user.isAuth,
+        name: newProp.user.user.name,
+        avatar: newProp.user.user.avatar
+      });
+    }
+  }
+
   render() {
+    let { isAuth, name, avatar } = this.state;
+    // guest ejs
+    const guestUser = (
+      <ul className="navbar-nav ml-auto">
+        <li className="nav-item">
+          <Link className="nav-link" to="/register">
+            Sign Up
+          </Link>
+        </li>
+        <li className="nav-item">
+          <Link className="nav-link" to="/login">
+            Login
+          </Link>
+        </li>
+      </ul>
+    );
+
+    // logined
+    const loginUser = (
+      <ul className="navbar-nav ml-auto">
+        <li className="nav-item">
+          <img alt="avatar" src={avatar} />
+          <p>{name}</p>
+        </li>
+        <li className="nav-item">
+          <a href="/" className="nav-link" onClick={this.logout}>
+            Logout
+          </a>
+        </li>
+      </ul>
+    );
     return (
       <nav className="navbar navbar-expand-sm navbar-dark bg-dark mb-4">
         <div className="container">
@@ -26,21 +84,30 @@ export default class Navbar extends Component {
                 </Link>
               </li>
             </ul>
-            <ul className="navbar-nav ml-auto">
-              <li className="nav-item">
-                <Link className="nav-link" to="/register">
-                  Sign Up
-                </Link>
-              </li>
-              <li className="nav-item">
-                <Link className="nav-link" to="/login">
-                  Login
-                </Link>
-              </li>
-            </ul>
+            {/* guest User */}
+            {isAuth ? loginUser : guestUser}
           </div>
         </div>
       </nav>
     );
   }
 }
+
+// dinh nghia proptype
+Navbar.propTypes = {
+  user: propTypes.object.isRequired,
+  logout: propTypes.func.isRequired
+};
+
+const mapStateToProps = ({ loginReducer }) => ({
+  user: loginReducer
+});
+
+const mapDispatchToProps = dispatch => ({
+  logout: () => dispatch(successAuth({}))
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Navbar);
