@@ -5,32 +5,14 @@ import { connect } from "react-redux";
 import propTypes from "prop-types";
 
 class Navbar extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isAuth: false,
-      name: "",
-      avatar: ""
-    };
-  }
-
   logout = event => {
     event.preventDefault();
     this.props.logout();
   };
 
-  componentWillReceiveProps(newProp) {
-    if (newProp.user.isAuth) {
-      this.setState({
-        isAuth: newProp.user.isAuth,
-        name: newProp.user.user.name,
-        avatar: newProp.user.user.avatar
-      });
-    }
-  }
-
   render() {
-    let { isAuth, name, avatar } = this.state;
+    let { isAuth, user } = this.props.user;
+    let { name, avatar } = user;
     // guest ejs
     const guestUser = (
       <ul className="navbar-nav ml-auto">
