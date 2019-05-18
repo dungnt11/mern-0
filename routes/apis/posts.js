@@ -34,7 +34,7 @@ routerUser.post(
 
 /**
  * route GET @api/posts
- * desc post
+ * desc get data
  * access Public
  */
 
